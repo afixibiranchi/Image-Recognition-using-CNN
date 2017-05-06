@@ -30,7 +30,7 @@ def generategraph(x, accuracy, lost):
     plt.savefig('graph.pdf')
     plt.cla()
     
-def generateoutput(image, output, label, title):
+def generateoutput(image, output, label, title, i):
     
     with open('output.csv', 'wb') as fopen:
         writer = csv.writer(fopen, delimiter=',')
@@ -55,8 +55,8 @@ def generateoutput(image, output, label, title):
     sns.barplot(x = "value", y = "class", data = dataset, color = "b")
     
     fig.tight_layout()
-    plt.savefig('probs.png')
-    plt.savefig('probs.pdf')
+    plt.savefig('probs' + str(i) + '.png')
+    plt.savefig('probs' + str(i) + '.pdf')
     plt.cla()
     
     

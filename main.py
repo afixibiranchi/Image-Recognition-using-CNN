@@ -98,7 +98,7 @@ def test():
         emb_data[0, :, :, :] = image
         
         prob = tf.nn.softmax(sess.run(model.y_hat, feed_dict = {model.X : emb_data}))
-        graph.generateoutput(image, prob.eval(), label, label[int(data_test[random_value, 1])])
+        graph.generateoutput(image, prob.eval(), label, label[int(data_test[random_value, 1])], i)
     
 def main():
     if Train:
