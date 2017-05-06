@@ -10,7 +10,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from sklearn.model_selection import train_test_split
 from settings import *
 
-data, output_dimension = utils.get_dataset(location, picture_dimension, visualize = False)
+data, output_dimension, label = utils.get_dataset(location, picture_dimension, visualize = False)
 
 data, data_test = train_test_split(data, test_size = split_percentage)
 
@@ -69,20 +69,36 @@ def train():
         
 
 def test():
-    
+    '''
     for k in xrange(0, data_test.shape[0] - batch_size, batch_size):
         
         emb_data = np.zeros((batch_size, picture_dimension, picture_dimension, 3), dtype = np.float32)
         emb_data_label = np.zeros((batch_size, output_dimension), dtype = np.float32)
         
         for x in xrange(batch_size):
-            image = misc.imread(location + data[k + x, 0])
+            image = misc.imread(location + data_test[k + x, 0])
             image = misc.imresize(image, (picture_dimension, picture_dimension))
-            emb_data_label[x, int(data[k + x, 1])] = 1.0
+            emb_data_label[x, int(data_test[k + x, 1])] = 1.0
                 
             emb_data[x, :, :, :] = image
            
         print "accuracy for " + str(k + 1) + " batch: " + str(sess.run(model.accuracy, feed_dict = {model.X : emb_data, model.Y : emb_data_label}))
+        
+    print "printing probabilities for random " + str(test_number) + " pictures"
+    '''
+    import random
+    
+    for i in xrange(test_number):
+        emb_data = np.zeros((1, picture_dimension, picture_dimension, 3), dtype = np.float32)
+        
+        random_value = random.randint(0, data_test.shape[0] - 1)
+        image = misc.imread(location + data_test[random_value, 0])
+        image = misc.imresize(image, (picture_dimension, picture_dimension))
+        
+        emb_data[0, :, :, :] = image
+        
+        prob = tf.nn.softmax(sess.run(model.y_hat, feed_dict = {model.X : emb_data}))
+        graph.generateoutput(image, prob.eval(), label, label[int(data_test[random_value, 1])])
     
 def main():
     if Train:

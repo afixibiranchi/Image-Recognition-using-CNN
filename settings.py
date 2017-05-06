@@ -15,4 +15,6 @@ epoch = 1000
 
 split_percentage = 0.2
 
-Train = True
+Train = False
+
+test_number = 10
