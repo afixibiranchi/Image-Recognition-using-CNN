@@ -21,5 +21,6 @@ epoch = 1000
 ![alt text](sample.png)
 ![alt text](graph.png)
 
+The model works perfectly.
+![alt text](success.jpg)
 
-Right now the model kinda sucks, so I need to recheck
