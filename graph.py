@@ -24,3 +24,4 @@ def generategraph(x, accuracy, lost):
     fig.tight_layout()
     plt.savefig('graph.png')
     plt.savefig('graph.pdf')
+    plt.cla()

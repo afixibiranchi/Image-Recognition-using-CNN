@@ -7,22 +7,15 @@ import graph
 import os
 import time
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-from tensorflow.examples.tutorials.mnist import input_data
-
-location = '/home/project/101_ObjectCategories/'
-current_location = os.getcwd()
-picture_dimension = 28
-learning_rate = 0.01
-dropout_probability = 1.0
-penalty = 0.0005
-batch_size = 20
-epoch = 1000
-Train = True
+from sklearn.model_selection import train_test_split
+from settings import *
 
 data, output_dimension = utils.get_dataset(location, picture_dimension, visualize = False)
 
+data, data_test = train_test_split(data, test_size = split_percentage)
+
 sess = tf.InteractiveSession()
-model = model.Model(picture_dimension, learning_rate, penalty, dropout_probability, output_dimension)
+model = model.Model(picture_dimension, learning_rate, penalty, dropout_probability, output_dimension, enable_dropout, enable_penalty)
 sess.run(tf.global_variables_initializer())
 saver = tf.train.Saver(tf.global_variables())
 
@@ -74,7 +67,23 @@ def train():
         graph.generategraph(EPOCH, ACCURACY, LOST)
         saver.save(sess, current_location + "/model.ckpt")
         
+
+def test():
+    
+    for k in xrange(0, data_test.shape[0] - batch_size, batch_size):
         
+        emb_data = np.zeros((batch_size, picture_dimension, picture_dimension, 3), dtype = np.float32)
+        emb_data_label = np.zeros((batch_size, output_dimension), dtype = np.float32)
+        
+        for x in xrange(batch_size):
+            image = misc.imread(location + data[k + x, 0])
+            image = misc.imresize(image, (picture_dimension, picture_dimension))
+            emb_data_label[x, int(data[k + x, 1])] = 1.0
+                
+            emb_data[x, :, :, :] = image
+           
+        print "accuracy for " + str(k + 1) + " batch: " + str(sess.run(model.accuracy, feed_dict = {model.X : emb_data, model.Y : emb_data_label}))
+    
 def main():
     if Train:
         train()
