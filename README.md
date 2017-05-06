@@ -24,3 +24,5 @@ epoch = 1000
 The model works perfectly.
 ![alt text](success.jpg)
 
+This is barplot for random picture
+![alt text](probs.png)
