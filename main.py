@@ -69,7 +69,7 @@ def train():
         
 
 def test():
-    '''
+    
     for k in xrange(0, data_test.shape[0] - batch_size, batch_size):
         
         emb_data = np.zeros((batch_size, picture_dimension, picture_dimension, 3), dtype = np.float32)
@@ -85,7 +85,7 @@ def test():
         print "accuracy for " + str(k + 1) + " batch: " + str(sess.run(model.accuracy, feed_dict = {model.X : emb_data, model.Y : emb_data_label}))
         
     print "printing probabilities for random " + str(test_number) + " pictures"
-    '''
+    
     import random
     
     for i in xrange(test_number):
